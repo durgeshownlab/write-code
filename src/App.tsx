@@ -119,8 +119,7 @@ function App() {
           <div className={styles.codeEditorContainer}>
             <CodeEditor
               handleEditorDidMount={handleEditorDidMount}
-              language={language}
-              code={code}
+              currentFile={currentFile}
               handleCodeChange={handleCodeChange}
               editorTheme={editorTheme}
             />

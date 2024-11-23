@@ -1,15 +1,15 @@
 import { Editor, OnChange, OnMount } from "@monaco-editor/react"
 import styles from './CodeEditor.module.scss'
 import React from "react"
+import { filesObject } from "../../config/structure"
 
 interface Props {
   handleEditorDidMount: OnMount,
-  language: string,
-  code: string,
+  currentFile: filesObject,
   handleCodeChange: OnChange
   editorTheme: string
 }
-const CodeEditor: React.FC<Props> = ({handleEditorDidMount, language, code, handleCodeChange, editorTheme}) => {
+const CodeEditor: React.FC<Props> = ({handleEditorDidMount, currentFile, handleCodeChange, editorTheme}) => {
 
  
   return (
@@ -19,8 +19,8 @@ const CodeEditor: React.FC<Props> = ({handleEditorDidMount, language, code, hand
           height="100%"
           width="100%"
           className={styles.codeEditor}
-          language={language}
-          value={code}
+          language={currentFile.language}
+          value={currentFile.code}
           theme={editorTheme}
           onMount={handleEditorDidMount}
           onChange={handleCodeChange}
