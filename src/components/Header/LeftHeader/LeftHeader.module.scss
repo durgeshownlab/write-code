@@ -1,0 +1,68 @@
+.leftHeader {
+  height: 100%;
+  width: auto;
+  // border: 1px solid slateblue;
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  flex: 1;
+
+  .fileTab {
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    width: auto;
+    border: none;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 0 10px;
+    cursor: pointer;
+    // border: 1px solid red;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5px;
+    text-decoration: none;
+
+    .fileIcon {
+      display: grid;
+      place-content: center;
+      color: yellow;
+      opacity: .5;
+
+      &.htmlIcon {
+        color: #e34c26;
+      }
+
+      &.cssIcon {
+        color: #254bdd;
+      }
+
+      &.jsIcon {
+        color: #f7df1e;
+      }
+    }
+
+    .fileName {
+      color: #657178;
+      font-size: 13px;
+    }
+
+    &:hover {
+      background-color: #29292f;
+    }
+
+    &.active {
+      background-color: #29292f;
+
+      .fileName {
+        color: #ffffff;
+      }
+
+      .fileIcon {
+        opacity: 1;
+      }
+    }
+  }
+}
