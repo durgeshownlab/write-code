@@ -162,6 +162,17 @@ function App() {
   const handleWindowResize = () => {
     console.log('Device width is: ', window.innerWidth)
     setIsMobile(prev=>window.innerWidth < 425)
+    if(codeEditorContainerRef.current) {
+      if(window.innerWidth < 425) {
+        codeEditorContainerRef.current.style.width = `${100}%`
+        codeEditorContainerRef.current.style.height = `${50}%`
+      }
+      else {
+        codeEditorContainerRef.current.style.width = `${50}%`
+        codeEditorContainerRef.current.style.height = `${100}%`
+
+      }
+    }
   }
 
   useEffect(() => {
@@ -179,14 +190,16 @@ function App() {
   const handleResizeMouseMove = (e: MouseEvent)=> {
     console.log(isMobile, window.innerWidth)
     if(codeEditorContainerRef.current) {
-      if(isMobile) {
+      if(window.innerWidth < 425) {
         console.log('is mobile')
         let newHeight = e.clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
         codeEditorContainerRef.current.style.height = `${newHeight}px`        
+        codeEditorContainerRef.current.style.width = `${100}%`        
       }
       else {
         let newWidth = e.clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
         codeEditorContainerRef.current.style.width = `${newWidth}px`
+        codeEditorContainerRef.current.style.height = `${100}%`
       }
     }
   }
@@ -215,13 +228,15 @@ function App() {
   const handleTouchResizeMove = (e: TouchEvent)=> {
     console.log(isMobile, window.innerWidth)
     if(codeEditorContainerRef.current) {
-      if(isMobile) {
+      if(window.innerWidth < 425) {
         let newHeight = e.touches[0].clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
         codeEditorContainerRef.current.style.height = `${newHeight}px`
+        codeEditorContainerRef.current.style.width = `${100}%`
       }
       else {
         let newWidth = e.touches[0].clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
         codeEditorContainerRef.current.style.width = `${newWidth}px`
+        codeEditorContainerRef.current.style.height = `${100}%`
       }
     }
   }
