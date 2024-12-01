@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import styles from './App.module.scss'
 import CodeEditor from './components/CodeEditor/CodeEditor'
 import { OnChange, OnMount } from '@monaco-editor/react'
@@ -7,13 +7,26 @@ import Output from './components/Output/Output'
 import { AiOutlineHolder } from "react-icons/ai";
 import Header from './components/Header/Header'
 import { filesObject } from './config/structure'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 
 
 function App() {
 
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
+  const mainContainerRef = useRef<HTMLDivElement | null>(null)
+  const codeEditorContainerRef = useRef<HTMLDivElement | null>(null)
+  const resizerRef = useRef<HTMLDivElement | null>(null)
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 425)
   const [language, setLanguage] = useState<string>('css')
   const [editorTheme, setEditorTheme] = useState<string>('vs-dark')
+  const [wordWrap, setWordWrap] = useState<boolean>(localStorage.getItem('wordWrap')? (localStorage.getItem('wordWrap')==='true' || localStorage.getItem('wordWrap')==='false')? JSON.parse(localStorage.getItem('wordWrap') as string): true: true)
+
+  const [showLineNumbers, setShowLineNumbers] = useState<boolean>(localStorage.getItem('showLineNumbers')? (localStorage.getItem('showLineNumbers')==='true' || localStorage.getItem('showLineNumbers')==='false')? JSON.parse(localStorage.getItem('showLineNumbers') as string): true: true)
+
+  const [miniMap, setMiniMap] = useState<boolean>(localStorage.getItem('miniMap')? (localStorage.getItem('miniMap')==='true' || localStorage.getItem('miniMap')==='false')? JSON.parse(localStorage.getItem('miniMap') as string): true: true)
+
+  const [isLandscapeMode, setIsLandscapeMode] = useState<boolean>(false)
+
   const [currentFile, setCurrentFile] = useState<filesObject>({
     label: '', 
     uri: '', 
@@ -22,25 +35,27 @@ function App() {
     fileExtantion: ''
   })
   const [code, setCode] = useState<string>('')
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
   
-  const [htmlCode, setHtmlCode] = useState<string>(`<!DOCTYPE html>
+  const [htmlCode, setHtmlCode] = useState<string>(localStorage.getItem('htmlCode') || `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <h1>Hello World</h1>
   </body>
-</html>
-`)
-  const [cssCode, setCssCode] = useState<string>(`* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }`)
-  const [jsCode, setJsCode] = useState<string>(`console.log('Hello World')`)
+</html>`)
+  const [cssCode, setCssCode] = useState<string>(localStorage.getItem('cssCode') || `* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}`)
+  const [jsCode, setJsCode] = useState<string>(localStorage.getItem('jsCode') || `console.log('Hello World')`)
 
   // code for mounting the editor in the DOM
   const handleEditorDidMount: OnMount = (editor: any, monaco: any) => {
@@ -56,12 +71,15 @@ function App() {
     if(currentFile) {
       if(currentFile.language === 'html') {
         setHtmlCode(code)
+        localStorage.setItem('htmlCode', code)
       }
       else if(currentFile.language === 'css') {
         setCssCode(code)
+        localStorage.setItem('cssCode', code)
       }
       else if(currentFile.language === 'javascript') {
         setJsCode(code)
+        localStorage.setItem('jsCode', code)
       }
     }
   }
@@ -90,6 +108,7 @@ function App() {
     }
   ]
 
+  // this useEffect will work when the url changes on refresh or initial time
   useEffect(() => {
     if(files && files.length > 0) {
       if(location.pathname === '/') {
@@ -107,27 +126,194 @@ function App() {
     }
   }, [])
 
+  // this useeffect will work when the code changes
+  useEffect(() => {
+    setCode(`
+      <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>${cssCode}</style>
+          </head>
+          <body>
+            ${htmlCode}
+            <script>
+              try {
+                ${jsCode}
+              } catch (err) {
+                console.error(err);
+              }
+            </script>
+          </body>
+        </html>
+    `)
+  }, [htmlCode, cssCode, jsCode ])
+
+
+  useEffect(() => {
+
+    localStorage.setItem('wordWrap', JSON.stringify(wordWrap))
+    localStorage.setItem('showLineNumbers', JSON.stringify(showLineNumbers))
+    localStorage.setItem('miniMap', JSON.stringify(miniMap))
+
+  }, [wordWrap, showLineNumbers, miniMap])
+
+  const handleWindowResize = () => {
+    console.log('Device width is: ', window.innerWidth)
+    setIsMobile(prev=>window.innerWidth < 425)
+  }
+
+  useEffect(() => {
+
+    window.addEventListener('resize', handleWindowResize)
+    window.addEventListener('orientationchange', handleWindowResize)
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize)
+      window.removeEventListener('orientationchange', handleWindowResize)
+    }
+  }, [])
+
+
+  const handleResizeMouseMove = (e: MouseEvent)=> {
+    console.log(isMobile, window.innerWidth)
+    if(codeEditorContainerRef.current) {
+      if(isMobile) {
+        console.log('is mobile')
+        let newHeight = e.clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
+        codeEditorContainerRef.current.style.height = `${newHeight}px`        
+      }
+      else {
+        let newWidth = e.clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
+        codeEditorContainerRef.current.style.width = `${newWidth}px`
+      }
+    }
+  }
+  
+  const handleResizeStop = () => {
+    document.removeEventListener('mousemove', handleResizeMouseMove)
+    document.removeEventListener('mouseup', handleResizeStop)
+
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      iframe.style.pointerEvents = 'auto';
+    }
+  }
+
+  const handleResize = (e: MouseEvent) => {
+    e.preventDefault();
+    document.addEventListener('mousemove', handleResizeMouseMove)
+    document.addEventListener('mouseup', handleResizeStop)
+
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      iframe.style.pointerEvents = 'none';
+    }
+  }
+
+  const handleTouchResizeMove = (e: TouchEvent)=> {
+    console.log(isMobile, window.innerWidth)
+    if(codeEditorContainerRef.current) {
+      if(isMobile) {
+        let newHeight = e.touches[0].clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
+        codeEditorContainerRef.current.style.height = `${newHeight}px`
+      }
+      else {
+        let newWidth = e.touches[0].clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
+        codeEditorContainerRef.current.style.width = `${newWidth}px`
+      }
+    }
+  }
+  
+  const handleTouchResizeStop = () => {
+    document.removeEventListener('touchmove', handleTouchResizeMove)
+    document.removeEventListener('touchend', handleTouchResizeStop)
+
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      iframe.style.pointerEvents = 'auto';
+    }
+  }
+
+  const handleTouchResize = (e: TouchEvent) => {
+    e.preventDefault();
+    document.addEventListener('touchmove', handleTouchResizeMove)
+    document.addEventListener('touchend', handleTouchResizeStop)
+
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      iframe.style.pointerEvents = 'none';
+    }
+  }
+
+  useEffect(() => {
+    if(resizerRef.current) {
+      resizerRef.current.addEventListener('mousedown', handleResize)
+      resizerRef.current.addEventListener('touchstart', handleTouchResize)
+    }
+    
+    return ()=> {
+      if(resizerRef.current) {
+        resizerRef.current.removeEventListener('mousedown', handleResize)
+        resizerRef.current.removeEventListener('touchstart', handleTouchResize)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('orientationchange', ()=>{
+        setIsMobile(window.innerWidth < 425)
+    })
+
+    return ()=>{
+      window.removeEventListener('orientationchange', ()=>{
+        setIsMobile(window.innerWidth < 425)
+      })
+    }
+  }, [])
+
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} ref={mainContainerRef}>
 
         <div className={styles.headerContainer}>
-          <Header files={files} setCurrentFile={setCurrentFile} currentFile={currentFile} />
+          <Header 
+            files={files} 
+            setCurrentFile={setCurrentFile} 
+            currentFile={currentFile}
+            isFullScreen={isFullScreen}
+            setIsFullScreen={setIsFullScreen}
+            mainContainerRef={mainContainerRef}
+            wordWrap={wordWrap}
+            setWordWrap={setWordWrap}
+            showLineNumbers={showLineNumbers}
+            setShowLineNumbers={setShowLineNumbers}
+            miniMap={miniMap}
+            setMiniMap={setMiniMap}
+            isLandscapeMode={isLandscapeMode}
+            setIsLandscapeMode={setIsLandscapeMode}
+            isMobile={isMobile} />
         </div>
 
         <div className={styles.codeEditorAndOutputContainer}>
-          <div className={styles.codeEditorContainer}>
+          <div className={styles.codeEditorContainer} ref={codeEditorContainerRef}>
             <CodeEditor
               handleEditorDidMount={handleEditorDidMount}
               currentFile={currentFile}
               handleCodeChange={handleCodeChange}
               editorTheme={editorTheme}
+              wordWrap={wordWrap}
+              showLineNumbers={showLineNumbers}
+              miniMap={miniMap}
             />
           </div>
 
-          {/* <div className={styles.resizerContainer}>
-            <AiOutlineHolder className={styles.resizerIcon} />
-          </div> */}
+          <div className={styles.resizerContainer} ref={resizerRef}>
+            <div className={styles.resizer}>
+              <BsThreeDotsVertical  className={styles.resizerIcon} />
+            </div>
+          </div>
 
           <div className={styles.outputContainer}>
             <Output code={code}  />

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './Output.module.scss';
 
 interface Props {
-  code: string
+  code: string,
 }
 
 const Output: React.FC<Props> = ({code}) => {
@@ -13,7 +13,7 @@ const Output: React.FC<Props> = ({code}) => {
       const iframeDoc = iframeRef.current.contentDocument;
       if(iframeDoc) {
         iframeDoc.open();
-        iframeDoc.write(code);
+        iframeDoc.write(`${code}`);
         iframeDoc.close();
       }
     }

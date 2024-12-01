@@ -8,8 +8,11 @@ interface Props {
   currentFile: filesObject,
   handleCodeChange: OnChange
   editorTheme: string
+  wordWrap: boolean
+  showLineNumbers: boolean
+  miniMap: boolean
 }
-const CodeEditor: React.FC<Props> = ({handleEditorDidMount, currentFile, handleCodeChange, editorTheme}) => {
+const CodeEditor: React.FC<Props> = ({handleEditorDidMount, currentFile, handleCodeChange, editorTheme, wordWrap, showLineNumbers, miniMap}) => {
 
  
   return (
@@ -28,7 +31,17 @@ const CodeEditor: React.FC<Props> = ({handleEditorDidMount, currentFile, handleC
           options={
             {
               automaticLayout: true,
-              lineNumbers: 'on',
+              lineNumbers: showLineNumbers? 'on': 'off',
+              minimap: {
+                enabled: miniMap,
+              },
+              stickyScroll: {
+                enabled: true,
+              },
+              wordWrap: wordWrap? 'on': 'off',
+              readOnly:  false,
+              // formatOnPaste: true
+              mouseWheelZoom: true,
             }
           }
         />
