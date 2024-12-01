@@ -128,26 +128,38 @@ function App() {
 
   // this useeffect will work when the code changes
   useEffect(() => {
-    setCode(`
-      <!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>${cssCode}</style>
-          </head>
-          <body>
-            ${htmlCode}
-            <script>
-              try {
-                ${jsCode}
-              } catch (err) {
-                console.error(err);
-              }
-            </script>
-          </body>
-        </html>
-    `)
+    let timeId: any = null
+    if(timeId) {
+      clearTimeout(timeId)
+    }
+    timeId = setTimeout(() => {
+      setCode(`
+        <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>${cssCode}</style>
+            </head>
+            <body>
+              ${htmlCode}
+              <script>
+                try {
+                  ${jsCode}
+                } catch (err) {
+                  console.error(err);
+                }
+              </script>
+            </body>
+          </html>
+      `)
+    }, 1000) 
+
+    return () => {
+      if(timeId) {
+        clearTimeout(timeId)
+      }
+    }
   }, [htmlCode, cssCode, jsCode ])
 
 
@@ -160,7 +172,7 @@ function App() {
   }, [wordWrap, showLineNumbers, miniMap])
 
   const handleWindowResize = () => {
-    console.log('Device width is: ', window.innerWidth)
+    // console.log('Device width is: ', window.innerWidth)
     setIsMobile(prev=>window.innerWidth < 425)
     if(codeEditorContainerRef.current) {
       if(window.innerWidth < 425) {
@@ -188,7 +200,7 @@ function App() {
 
 
   const handleResizeMouseMove = (e: MouseEvent)=> {
-    console.log(isMobile, window.innerWidth)
+    // console.log(isMobile, window.innerWidth)
     if(codeEditorContainerRef.current) {
       if(window.innerWidth < 425) {
         console.log('is mobile')
@@ -226,7 +238,7 @@ function App() {
   }
 
   const handleTouchResizeMove = (e: TouchEvent)=> {
-    console.log(isMobile, window.innerWidth)
+    // console.log(isMobile, window.innerWidth)
     if(codeEditorContainerRef.current) {
       if(window.innerWidth < 425) {
         let newHeight = e.touches[0].clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2

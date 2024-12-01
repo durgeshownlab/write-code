@@ -64,8 +64,8 @@ const RightHeader: React.FC<Props> = ({isFullScreen, setIsFullScreen, mainContai
 
   const handleLandscapeMode = async () => {
     try {
-      if(isMobile && !isLandscapeMode && isFullScreen  && screen.orientation.lock) {
-        await screen.orientation.lock('landscape');
+      if(isMobile && !isLandscapeMode && isFullScreen  && (screen.orientation as any).lock) {
+        await (screen.orientation as any).lock('landscape');
         setIsLandscapeMode(true);        
       }
       else if(isLandscapeMode && isFullScreen && screen.orientation.unlock) {
