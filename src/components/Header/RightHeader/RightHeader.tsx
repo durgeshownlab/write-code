@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import styles from './RightHeader.module.scss'
 import { RxEnterFullScreen, RxExitFullScreen } from 'react-icons/rx'
-import { MdFormatListNumbered, MdFullscreenExit, MdOutlineFormatListNumbered, MdOutlineFullscreen, MdOutlineScreenLockLandscape, MdOutlineScreenLockPortrait } from 'react-icons/md'
+import { MdFormatListNumbered} from 'react-icons/md'
 import { TbTextWrap, TbTextWrapDisabled } from 'react-icons/tb'
-import { PiListNumbers, PiMapTrifoldDuotone } from 'react-icons/pi'
-import { IoPhoneLandscapeOutline, IoPhonePortraitOutline } from 'react-icons/io5'
+import { PiMapTrifoldDuotone } from 'react-icons/pi'
 import { IoIosPhoneLandscape, IoIosPhonePortrait } from 'react-icons/io'
 interface Props {
   isFullScreen: boolean,

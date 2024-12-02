@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './LeftHeader.module.scss'
 import { FaCss3Alt, FaHtml5, FaJs } from 'react-icons/fa'
-import { SiCss3 } from 'react-icons/si'
 import { NavLink } from 'react-router'
 
 interface Props {

@@ -1,7 +1,6 @@
-import React, { Touch, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Output.module.scss';
 import ConsoleMessage from '../ConsoleMessage/ConsoleMessage';
-import { BsTerminal } from 'react-icons/bs';
 
 interface Props {
   code: string,

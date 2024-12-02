@@ -1,10 +1,9 @@
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './App.module.scss'
 import CodeEditor from './components/CodeEditor/CodeEditor'
 import { OnChange, OnMount } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import Output from './components/Output/Output'
-import { AiOutlineHolder } from "react-icons/ai";
 import Header from './components/Header/Header'
 import { filesObject } from './config/structure'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -17,7 +16,7 @@ function App() {
   const codeEditorContainerRef = useRef<HTMLDivElement | null>(null)
   const resizerRef = useRef<HTMLDivElement | null>(null)
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 425)
-  const [language, setLanguage] = useState<string>('css')
+  // const [language, setLanguage] = useState<string>('css')
   const [editorTheme, setEditorTheme] = useState<string>('vs-dark')
   const [wordWrap, setWordWrap] = useState<boolean>(localStorage.getItem('wordWrap')? (localStorage.getItem('wordWrap')==='true' || localStorage.getItem('wordWrap')==='false')? JSON.parse(localStorage.getItem('wordWrap') as string): true: true)
 
@@ -58,7 +57,7 @@ function App() {
   const [jsCode, setJsCode] = useState<string>(localStorage.getItem('jsCode') || `console.log('Hello World')`)
 
   // code for mounting the editor in the DOM
-  const handleEditorDidMount: OnMount = (editor: any, monaco: any) => {
+  const handleEditorDidMount: OnMount = (editor: any) => {
     // console.log('editorDidMount', editor, monaco)
     if(editorRef.current) {
       editorRef.current = editor
@@ -173,7 +172,7 @@ function App() {
 
   const handleWindowResize = () => {
     // console.log('Device width is: ', window.innerWidth)
-    setIsMobile(prev=>window.innerWidth < 425)
+    setIsMobile(()=>window.innerWidth < 425)
     if(codeEditorContainerRef.current) {
       if(window.innerWidth < 425) {
         codeEditorContainerRef.current.style.width = `${100}%`
@@ -289,6 +288,7 @@ function App() {
   }, [])
 
   useEffect(() => {
+    setEditorTheme('vs-dark')
     window.addEventListener('orientationchange', ()=>{
         setIsMobile(window.innerWidth < 425)
     })
