@@ -4,10 +4,13 @@ import ConsoleMessage from '../ConsoleMessage/ConsoleMessage';
 
 interface Props {
   code: string,
+  iframeRef: React.RefObject<HTMLIFrameElement>
+  logs: any
+  setLogs: Function
 }
 
-const Output: React.FC<Props> = ({code}) => {
-  const iframeRef = useRef<HTMLIFrameElement>(null)
+const Output: React.FC<Props> = ({code, iframeRef, logs, setLogs}) => {
+  // const iframeRef = useRef<HTMLIFrameElement>(null)
   const consoleResizerRef = useRef<HTMLDivElement>(null)
   const consoleContainerRef = useRef<HTMLDivElement>(null)
 
@@ -104,7 +107,7 @@ const Output: React.FC<Props> = ({code}) => {
           
         </div>
         <div className={styles.consoleMainContainer} ref={consoleContainerRef}>
-          <ConsoleMessage iframeRef={iframeRef} consoleContainerRef={consoleContainerRef} />
+          <ConsoleMessage iframeRef={iframeRef} consoleContainerRef={consoleContainerRef} logs={logs} setLogs={setLogs} />
         </div>
 
       </div>

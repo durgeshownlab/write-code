@@ -55,6 +55,8 @@ function App() {
   box-sizing: border-box;
 }`)
   const [jsCode, setJsCode] = useState<string>(localStorage.getItem('jsCode') || `console.log('Hello World')`)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [logs, setLogs] = useState([]);
 
   // code for mounting the editor in the DOM
   const handleEditorDidMount: OnMount = (editor: any) => {
@@ -125,13 +127,25 @@ function App() {
     }
   }, [])
 
+  const compileCodeInTemplate = () => {
+    if(iframeRef.current) {
+      const iframeDoc = iframeRef.current.contentDocument;
+      if(iframeDoc) {
+        setLogs([])
+        iframeDoc.open();
+        iframeDoc.write(`${code}`);
+        iframeDoc.close();
+      }
+    }   
+  }
+
   // this useeffect will work when the code changes
   useEffect(() => {
     let timeId: any = null
     if(timeId) {
       clearTimeout(timeId)
     }
-    timeId = setTimeout(() => {
+    timeId = setTimeout(()=>{
       setCode(`
         <!DOCTYPE html>
           <html lang="en">
@@ -151,7 +165,7 @@ function App() {
               </script>
             </body>
           </html>
-      `)
+        `)
     }, 1000) 
 
     return () => {
@@ -320,7 +334,8 @@ function App() {
             setMiniMap={setMiniMap}
             isLandscapeMode={isLandscapeMode}
             setIsLandscapeMode={setIsLandscapeMode}
-            isMobile={isMobile} />
+            isMobile={isMobile}
+            compileCodeInTemplate={compileCodeInTemplate} />
         </div>
 
         <div className={styles.codeEditorAndOutputContainer}>
@@ -343,7 +358,7 @@ function App() {
           </div>
 
           <div className={styles.outputContainer}>
-            <Output code={code}  />
+            <Output code={code} iframeRef={iframeRef} logs={logs} setLogs={setLogs} />
           </div>
         </div>
       </div>

@@ -20,14 +20,17 @@ interface Props {
   setMiniMap: Function,
   isLandscapeMode: boolean,
   setIsLandscapeMode: Function,
-  isMobile: boolean
+  isMobile: boolean,
+  compileCodeInTemplate: Function
 }
-const Header: React.FC<Props> = ({files, setCurrentFile, currentFile, isFullScreen, setIsFullScreen, mainContainerRef, wordWrap, setWordWrap, showLineNumbers, setShowLineNumbers, miniMap, setMiniMap, isLandscapeMode, setIsLandscapeMode, isMobile}) => {
+const Header: React.FC<Props> = ({files, setCurrentFile, currentFile, isFullScreen, setIsFullScreen, mainContainerRef, wordWrap, setWordWrap, showLineNumbers, setShowLineNumbers, miniMap, setMiniMap, isLandscapeMode, setIsLandscapeMode, isMobile, compileCodeInTemplate}) => {
   return (
     <>
       <div className={styles.header} >
         <LeftHeader files={files} setCurrentFile={setCurrentFile} />
-        <CenterHeader currentFile={currentFile} />
+        <CenterHeader 
+          currentFile={currentFile} 
+          compileCodeInTemplate={compileCodeInTemplate}/>
         <RightHeader 
           isFullScreen={isFullScreen} 
           setIsFullScreen={setIsFullScreen} 

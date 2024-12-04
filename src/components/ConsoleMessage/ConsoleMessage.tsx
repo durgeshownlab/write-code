@@ -3,13 +3,16 @@ import styles from './ConsoleMessage.module.scss'
 import { Console, Hook, Unhook } from 'console-feed';
 import { BsTerminal } from 'react-icons/bs';
 import { IoBan } from 'react-icons/io5';
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 
 interface Props {
   iframeRef: React.RefObject<HTMLIFrameElement>
   consoleContainerRef: React.RefObject<HTMLDivElement>
+  logs: any
+  setLogs: Function
 }
-const ConsoleMessage: React.FC<Props> = ({iframeRef, consoleContainerRef}) => {
-  const [logs, setLogs] = useState([]);
+const ConsoleMessage: React.FC<Props> = ({iframeRef, consoleContainerRef, logs, setLogs}) => {
+  // const [logs, setLogs] = useState([]);
   const [isConsoleVisible, setIsConsoleVisible] = useState<boolean>(false)
 
 
@@ -38,12 +41,13 @@ const ConsoleMessage: React.FC<Props> = ({iframeRef, consoleContainerRef}) => {
       // console.log(consoleContainerRef.current?.offsetHeight>30)
       if(consoleContainerRef.current.offsetHeight>30) {
         iframeRef.current.style.height = '100%';
+        setIsConsoleVisible(()=>false);
       }
       else if(consoleContainerRef.current.offsetHeight<=30) {
         iframeRef.current.style.height = '50%';
+        setIsConsoleVisible(()=>true);
       }
     }
-    setIsConsoleVisible(!isConsoleVisible);
   }
 
   return (
@@ -58,6 +62,10 @@ const ConsoleMessage: React.FC<Props> = ({iframeRef, consoleContainerRef}) => {
       <button className={styles.consoleBtn} onClick={() => setLogs([])}>
         <IoBan className={styles.consoleBtnIcon} />
         <span>Clear</span>
+      </button>
+
+      <button className={`${styles.consoleBtn} ${styles.consoleToggleRight}`} onClick={handleConsoleToggle}>
+        {isConsoleVisible?<MdKeyboardArrowUp className={styles.consoleBtnIcon} />:<MdKeyboardArrowDown className={styles.consoleBtnIcon} />}
       </button>
     </div>
     <Console logs={logs} variant="dark" />
