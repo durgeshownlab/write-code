@@ -65,7 +65,6 @@ function App() {
     // console.log('editorDidMount', editor, monaco)
     if(editorRef.current) {
       editorRef.current = editor
-      // monaco.editor.setModelLanguage(editor.getModel(), "html");  
     }
   }
 
@@ -187,7 +186,6 @@ function App() {
   }, [wordWrap, showLineNumbers, miniMap])
 
   const handleWindowResize = () => {
-    // console.log('Device width is: ', window.innerWidth)
     setIsMobile(()=>window.innerWidth < 425)
     if(codeEditorContainerRef.current) {
       if(window.innerWidth < 425) {
@@ -197,7 +195,6 @@ function App() {
       else {
         codeEditorContainerRef.current.style.width = `${50}%`
         codeEditorContainerRef.current.style.height = `${100}%`
-
       }
     }
   }
