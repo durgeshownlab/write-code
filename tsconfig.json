@@ -1,7 +1,9 @@
 {
   "files": [],
   "compilerOptions": {
-    "noUnusedLocals": false
+    "skipLibCheck": true,
+    "noUnusedLocals": false,
+    "strict": true
   },
   "references": [
     { "path": "./tsconfig.app.json" },
