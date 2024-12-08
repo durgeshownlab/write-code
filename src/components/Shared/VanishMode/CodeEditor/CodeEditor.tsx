@@ -1,7 +1,8 @@
 import { Editor, OnChange, OnMount } from "@monaco-editor/react"
 import styles from './CodeEditor.module.scss'
 import React from "react"
-import { filesObject } from "../../config/structure"
+import { filesObject } from "../../../../config/structure"
+import CodeEditorLoading from "../../LoadingMockup/CodeEditorLoading/CodeEditorLoading.component"
 
 interface Props {
   handleEditorDidMount: OnMount,
@@ -27,7 +28,7 @@ const CodeEditor: React.FC<Props> = ({handleEditorDidMount, currentFile, handleC
           theme={editorTheme}
           onMount={handleEditorDidMount}
           onChange={handleCodeChange}
-          loading={<div>Your IDE is Initializing...</div>}
+          loading={<CodeEditorLoading />}
           options={
             {
               automaticLayout: true,

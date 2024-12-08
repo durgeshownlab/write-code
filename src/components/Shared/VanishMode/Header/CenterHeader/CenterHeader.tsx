@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './CenterHeader.module.scss'
-import { filesObject } from '../../../config/structure'
+import { filesObject } from '../../../../../config/structure'
 import { RiPlayLargeFill } from 'react-icons/ri'
 
 interface Props {

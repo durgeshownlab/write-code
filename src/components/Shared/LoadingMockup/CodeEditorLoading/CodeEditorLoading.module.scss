@@ -1,0 +1,88 @@
+.codeEditorLoadingContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+
+  .codeEditorLoading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: center;
+    align-items: flex-start;
+    // border: 1PX solid;
+
+    .codeLine {
+      width: 70%;
+      height: 20px;
+      background-color: rgb(213, 213, 213);
+      border-radius: 5px;
+      animation: fade-shine 1s linear infinite;
+
+      &:nth-child(1) {
+        animation-delay: 0.1s;
+        width: 80%;
+      }
+      &:nth-child(2) {
+        width: 60%;
+        animation-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        width: 80%;
+        animation-delay: 0.3s;
+      }
+      &:nth-child(4) {
+        width: 90%;
+        animation-delay: 0.4s;
+      }
+      &:nth-child(5) {
+        width: 20%;
+        animation-delay: 0.5s;
+      }
+      &:nth-child(6) {
+        width: 50%;
+        animation-delay: 0.6s;
+      }
+      &:nth-child(7) {
+        width: 40%;
+        animation-delay: 0.7s;
+      }
+      &:nth-child(8) {
+        width: 70%;
+        animation-delay: 0.8s;
+      }
+      &:nth-child(9) {
+        width: 30%;
+        animation-delay: 0.9s;
+      }
+      &:nth-child(10) {
+        width: 40%;
+        animation-delay: 1s;
+      }
+    }
+
+    .loadingText {
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      text-align: left;
+    }
+  }
+}
+
+@keyframes fade-shine {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

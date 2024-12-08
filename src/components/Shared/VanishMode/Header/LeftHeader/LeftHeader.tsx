@@ -16,7 +16,7 @@ const LeftHeader: React.FC<Props> = ({files, setCurrentFile}) => {
             files.map((file: any) => (
               <NavLink 
                 key={file.uri}
-                to={`${file.uri}`} 
+                to={`/vanish-mode/${file.uri}`} 
                 className={({isActive})=>`${styles.fileTab} ${(isActive || (location.pathname === '/' && file.uri === 'index.html'))? styles.active: ''}`}
                 onClick={() => setCurrentFile(file)} >
                 <div className={`${styles.fileIcon} ${styles[file.fileExtantion.toLowerCase()+'Icon']} `}>

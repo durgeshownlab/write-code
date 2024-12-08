@@ -97,10 +97,28 @@ const Output: React.FC<Props> = ({code, iframeRef, logs, setLogs}) => {
     }
   }, [])
 
+  // function to add a click event listener to the iframe's document to open links in a new tab
+  const handleOnLoad = ()=>{
+    if(iframeRef.current) {
+      const iframeDocument = iframeRef.current.contentDocument;
+      if (iframeDocument) {
+        iframeDocument.addEventListener('click', (event: any) => {
+          if (event.target.tagName === 'A' && event.target.href) {
+            window.open(event.target.href, '_blank', 'noopener,noreferrer');
+            event.preventDefault();
+          }
+        });
+      }
+    }
+  }
+
   return (
     <>
       <div className={styles.outputContainer}>
-        <iframe ref={iframeRef} className={styles.output}>
+        <iframe 
+          ref={iframeRef} 
+          className={styles.output}
+          onLoad={handleOnLoad} >
 
         </iframe>
         <div className={styles.consoleResizer} ref={consoleResizerRef} >
