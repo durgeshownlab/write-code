@@ -7,6 +7,8 @@ import Output from './components/Output/Output'
 import Header from './components/Header/Header'
 import { filesObject } from './config/structure'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { handleTouchResize } from './functions/events/touch.events'
+import { handleResize } from './functions/events/mouse.events'
 
 
 function App() {
@@ -212,91 +214,30 @@ function App() {
   }, [])
 
 
-  const handleResizeMouseMove = (e: MouseEvent)=> {
-    // console.log(isMobile, window.innerWidth)
-    if(codeEditorContainerRef.current) {
-      if(window.innerWidth < 425) {
-        console.log('is mobile')
-        let newHeight = e.clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
-        codeEditorContainerRef.current.style.height = `${newHeight}px`        
-        codeEditorContainerRef.current.style.width = `${100}%`        
-      }
-      else {
-        let newWidth = e.clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
-        codeEditorContainerRef.current.style.width = `${newWidth}px`
-        codeEditorContainerRef.current.style.height = `${100}%`
-      }
-    }
-  }
-  
-  const handleResizeStop = () => {
-    document.removeEventListener('mousemove', handleResizeMouseMove)
-    document.removeEventListener('mouseup', handleResizeStop)
-
-    const iframe = document.querySelector('iframe');
-    if (iframe) {
-      iframe.style.pointerEvents = 'auto';
-    }
-  }
-
-  const handleResize = (e: MouseEvent) => {
-    e.preventDefault();
-    document.addEventListener('mousemove', handleResizeMouseMove)
-    document.addEventListener('mouseup', handleResizeStop)
-
-    const iframe = document.querySelector('iframe');
-    if (iframe) {
-      iframe.style.pointerEvents = 'none';
-    }
-  }
-
-  const handleTouchResizeMove = (e: TouchEvent)=> {
-    // console.log(isMobile, window.innerWidth)
-    if(codeEditorContainerRef.current) {
-      if(window.innerWidth < 425) {
-        let newHeight = e.touches[0].clientY - codeEditorContainerRef.current.getBoundingClientRect().top - 2
-        codeEditorContainerRef.current.style.height = `${newHeight}px`
-        codeEditorContainerRef.current.style.width = `${100}%`
-      }
-      else {
-        let newWidth = e.touches[0].clientX - codeEditorContainerRef.current.getBoundingClientRect().left - 2
-        codeEditorContainerRef.current.style.width = `${newWidth}px`
-        codeEditorContainerRef.current.style.height = `${100}%`
-      }
-    }
-  }
-  
-  const handleTouchResizeStop = () => {
-    document.removeEventListener('touchmove', handleTouchResizeMove)
-    document.removeEventListener('touchend', handleTouchResizeStop)
-
-    const iframe = document.querySelector('iframe');
-    if (iframe) {
-      iframe.style.pointerEvents = 'auto';
-    }
-  }
-
-  const handleTouchResize = (e: TouchEvent) => {
-    e.preventDefault();
-    document.addEventListener('touchmove', handleTouchResizeMove)
-    document.addEventListener('touchend', handleTouchResizeStop)
-
-    const iframe = document.querySelector('iframe');
-    if (iframe) {
-      iframe.style.pointerEvents = 'none';
-    }
-  }
-
+  // for handling resize events on code editor
   useEffect(() => {
+
+    // function for the mouse down event when user start to resize
+    const mouseDownListener = (e: MouseEvent) => {
+      e.preventDefault()
+      handleResize(e, codeEditorContainerRef)
+    }
+
+    // function for the touch start event when user start to resize using touch
+    const TouchStartListener = (e: TouchEvent) => {
+      e.preventDefault()
+      handleTouchResize(e, codeEditorContainerRef)
+    }
+
     if(resizerRef.current) {
-      resizerRef.current.addEventListener('mousedown', handleResize)
-      resizerRef.current.addEventListener('touchstart', handleTouchResize)
+      resizerRef.current.addEventListener('mousedown', mouseDownListener)
+      resizerRef.current.addEventListener('touchstart', TouchStartListener)
     }
     
     return ()=> {
       if(resizerRef.current) {
-        resizerRef.current.removeEventListener('mousedown', handleResize)
-        resizerRef.current.removeEventListener('touchstart', handleTouchResize)
+        resizerRef.current.removeEventListener('mousedown', mouseDownListener)
+        resizerRef.current.removeEventListener('touchstart', TouchStartListener)
       }
     }
   }, [])
