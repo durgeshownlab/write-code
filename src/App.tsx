@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import VanishMode from './components/Shared/VanishMode/VanishMode.component'
 import FourNotFour from './components/Shared/FourNotFour/FourNotFour.component'
