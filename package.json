@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
-    "@tailwindcss/postcss": "^4.1.12",
-    "@tailwindcss/vite": "^4.1.12",
     "clientjs": "^0.2.1",
     "codeeditor": "file:",
     "console-feed": "^3.6.0",
