@@ -1,0 +1,154 @@
+// Footer.module.scss
+.footer {
+  position: relative;
+  background: linear-gradient(135deg, #1b1a1e 0%, #1b1818 100%);
+  color: white;
+  overflow: hidden;
+  margin-top: auto;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem 2rem;
+
+    @media (max-width: 768px) {
+      padding: 3rem 1rem 2rem;
+    }
+  }
+
+
+  .techSection {
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+
+    .techTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #00d4ff;
+
+      .titleIcon {
+        font-size: 1.4rem;
+      }
+    }
+
+    .techGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+
+      .techItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1.5rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(0, 72, 255, 0.5);
+          transform: translateY(-4px);
+        }
+
+        .techIcon {
+          font-size: 2.5rem;
+          transition: all 0.3s ease;
+
+          &.html {
+            color: #e34f26;
+          }
+
+          &.css {
+            color: #1572b6;
+          }
+
+          &.js {
+            color: #f7df1e;
+          }
+
+          &.react {
+            color: #61dafb;
+          }
+
+          &.node {
+            color: #68a063;
+          }
+
+          &.python {
+            color: #3776ab;
+          }
+        }
+
+        span {
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .bottomSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .copyright {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+
+      .heartIcon {
+        color: #ff4757;
+        animation: heartbeat 1.5s ease-in-out infinite;
+      }
+    }
+
+    .legalLinks {
+      display: flex;
+      gap: 2rem;
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .legalLink {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #00d4ff;
+        }
+      }
+    }
+  }
+}

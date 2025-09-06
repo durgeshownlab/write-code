@@ -1,10 +1,17 @@
-import { Link } from "react-router"
+
+import Footer from "./Footer/Footer.component"
+import Navbar from "./NavBar/NavBar.component";
+import HeroSection from "./HeroSection/HeroSection";
+import styles from "./Home.module.scss"
 
 const Home = () => {
+
+
   return (
-    <div>
-      <h1>Home</h1>
-      <Link to="/vanish-mode">Vanish Mode</Link>
+    <div className={`${styles.mainContainer}`}>
+      <Navbar />
+      <HeroSection />
+      <Footer />
     </div>
   )
 }
