@@ -2,7 +2,7 @@
 import React from 'react';
 import { 
   FiCode, FiZap, FiUsers, FiGlobe, FiShield, FiClock,
-  FiHeart, FiTarget, FiTrendingUp, FiAward, FiStar,
+  FiHeart, FiTarget, FiTrendingUp, FiAward,
   FiGithub, FiLinkedin, FiTwitter, FiMail
 } from 'react-icons/fi';
 import { SiHtml5, SiCss3, SiJavascript, SiReact, SiNodedotjs, SiPython } from 'react-icons/si';

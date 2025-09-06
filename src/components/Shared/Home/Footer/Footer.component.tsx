@@ -1,31 +1,16 @@
 // Footer.tsx
 import React from 'react';
-import { 
-  FiCode, FiGithub, FiTwitter, FiLinkedin, FiMail, 
-  FiHeart, FiZap, FiBook, FiUsers, FiHelpCircle,
-  FiShield, FiGlobe, FiCpu
-} from 'react-icons/fi';
-import { SiHtml5, SiCss3, SiJavascript, SiReact, SiNodedotjs, SiPython } from 'react-icons/si';
+import { FiHeart, FiCpu } from 'react-icons/fi';
+import { SiHtml5, SiCss3, SiJavascript } from 'react-icons/si';
 import styles from './Footer.module.scss';
 
 interface FooterProps {
   className?: string;
-  onNewsletterSubmit?: (email: string) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({
-  className = '',
-  onNewsletterSubmit = (email: string) => console.log('Newsletter signup:', email)
+  className = ''
 }) => {
-  const [email, setEmail] = React.useState('');
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      onNewsletterSubmit(email);
-      setEmail('');
-    }
-  };
 
   const currentYear = new Date().getFullYear();
 
