@@ -8,13 +8,11 @@ import { Link } from 'react-router';
 interface HeroSectionProps {
   className?: string;
   onStartCoding?: () => void;
-  onWatchDemo?: () => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   className = '',
-  onStartCoding = () => console.log('Start coding clicked'),
-  onWatchDemo = () => console.log('Watch demo clicked')
+  onStartCoding = () => console.log('Start coding clicked')
 }) => {
   return (
     <section className={`${styles.hero} ${className}`}>
